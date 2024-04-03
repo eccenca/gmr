@@ -1,6 +1,5 @@
-# cmem-plugin-imr
+# Inteligent Model Registry
 
-Inteligent Model Registry
 
 [![eccenca Corporate Memory](https://img.shields.io/badge/eccenca-Corporate%20Memory-orange)](https://documentation.eccenca.com) [![workflow](https://github.com/eccenca/imr/actions/workflows/check.yml/badge.svg)](https://github.com/eccenca/imr/actions)  
 
