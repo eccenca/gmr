@@ -1,13 +1,11 @@
-# cmem-plugin-imr
+# imr (Inteligent Model Registry)
 
-Inteligent Model Registry
+This is a command-line interface and library for managing inteligent models.
 
-This is a plugin for [eccenca](https://eccenca.com) [Corporate Memory](https://documentation.eccenca.com).
-
-You can install it with the [cmemc](https://eccenca.com/go/cmemc) command line
-clients like this:
+You can install the [imr](https://github.com/eccenca/imr) command-line and library
+with pip as following:
 
 ```
-cmemc admin workspace python install cmem-plugin-imr
+pip install imr
 ```
 
