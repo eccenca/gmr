@@ -13,18 +13,18 @@ home = Path.home()
 imr_dir = home + "/.imr"
 imr_local: IMRLocal = IMRLocal(imr_dir)
 imr_remote: IMRRemote = None
+imr_config = None
 
-
-def loadParams() -> None:
+def load_params() -> None:
     """Load the default parameters from conf.yaml file."""
-    with open(imr_dir + "/config.yaml") as stream:
-        imrConfig = yaml.safe_load(stream)
+    with Path.open(imr_dir + "/config.yaml") as stream:
+        imr_config = yaml.safe_load(stream)
 
 
 @click.group()
 def cli() -> None:
     """Get the cli command options."""
-    #    loadParams()
+    #  add  loadParams() later
 
 
 @cli.group()
@@ -78,14 +78,14 @@ def rm(package: str, version: str) -> None:
 
 
 @remote.command()
-@click.argument("model_directory")
+@click.argument("model_dir")
 @click.argument("package")
 @click.option(
     "-v", "--version", type=str, default="latest", help="version of the model.", show_default=True
 )
-def push(model_directory: str, package: str, version: str) -> None:
+def push(model_dir: str, package: str, version: str) -> None:
     """Push model to remote repository."""
-    imr_remote.push(model_directory, package, version)
+    imr_remote.push(model_dir, package, version)
 
 
 @remote.command()
@@ -101,9 +101,9 @@ def push(model_directory: str, package: str, version: str) -> None:
 @click.option(
     "-v", "--version", type=str, default="latest", help="version of the model.", show_default=True
 )
-def pull(package: str, dir: str, version: str) -> None:
+def pull(package: str, model_dir: str, version: str) -> None:
     """Pull model from remote repository."""
-    imr_remote.pull(dir, package, version)
+    imr_remote.pull(model_dir, package, version)
 
 
 if __name__ == "__main__":
