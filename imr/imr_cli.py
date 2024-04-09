@@ -1,29 +1,29 @@
-from pathlib import Path
-""" Path module.
+"""Path module.
 
 For handling local files and directory operations.
 """
 
+from pathlib import Path
+
 import click
-import yaml
 
-from imr import IMRLocal, IMRRemote
+from imr.imr import IMRLocal, IMRRemote
 
-home = Path.home()
-imr_dir = home + "/.imr"
-imr_local: IMRLocal = IMRLocal(imr_dir)
-imr_remote: IMRRemote = None
-imr_config = None
 
-def load_params() -> None:
-    """Load the default parameters from conf.yaml file."""
-    with Path.open(imr_dir + "/config.yaml") as stream:
-        imr_config = yaml.safe_load(stream)
+class Context:
+    """The context for all CLI commands."""
+
+    home = Path.home()
+    imr_dir = home / ".imr"
+    imr_local: IMRLocal = IMRLocal(str(imr_dir))
+    imr_remote: IMRRemote
 
 
 @click.group()
-def cli() -> None:
+@click.pass_context
+def cli(ctx: click.Context) -> None:
     """Get the cli command options."""
+    ctx.obj = Context()
     #  add  loadParams() later
 
 
@@ -33,10 +33,11 @@ def local() -> None:
 
 
 @local.command("list")
-def list_local() -> None:
+@click.pass_obj
+def list_local(obj: Context) -> None:
     """List local packages."""
-    for package in imr_local.list():
-        print(package)
+    for package in obj.imr_local.list():
+        click.echo(package)
 
 
 @local.command()
@@ -44,27 +45,29 @@ def list_local() -> None:
 @click.option(
     "-v", "--version", type=str, default="latest", help="version of the model.", show_default=True
 )
-def remove(package: str, version: str) -> None:
+@click.pass_obj
+def remove(obj: Context, package: str, version: str) -> None:
     """Remove local packages."""
-    local.rm(package, version)
+    obj.imr_local.rm(package, version)
 
 
 @cli.group()
 @click.argument("host")
 @click.argument("user")
 @click.argument("password")
-def remote(host: str, user: str, password: str) -> None:
+@click.pass_obj
+def remote(obj: Context, host: str, user: str, password: str) -> None:
     """Get remote command cli options."""
-    global imr_remote
-    imr_remote = IMRRemote(host, user, password)
+    obj.imr_remote = IMRRemote(host, user, password)
 
 
 @remote.command("list")
-def list_remote() -> None:
+@click.pass_obj
+def list_remote(obj: Context) -> None:
     """List remote packages."""
-    packages = imr_remote.list()
+    packages = obj.imr_remote.list()
     for p in packages:
-        print(p)
+        click.echo(p)
 
 
 @remote.command()
@@ -72,9 +75,10 @@ def list_remote() -> None:
 @click.option(
     "-v", "--version", type=str, default="latest", help="version of the model.", show_default=True
 )
-def rm(package: str, version: str) -> None:
+@click.pass_obj
+def rm(obj: Context, package: str, version: str) -> None:
     """Remove remote package."""
-    imr_remote.rm(package, version)
+    obj.imr_remote.rm(package, version)
 
 
 @remote.command()
@@ -83,9 +87,10 @@ def rm(package: str, version: str) -> None:
 @click.option(
     "-v", "--version", type=str, default="latest", help="version of the model.", show_default=True
 )
-def push(model_dir: str, package: str, version: str) -> None:
+@click.pass_obj
+def push(obj: Context, model_dir: str, package: str, version: str) -> None:
     """Push model to remote repository."""
-    imr_remote.push(model_dir, package, version)
+    obj.imr_remote.push(model_dir, package, version)
 
 
 @remote.command()
@@ -94,17 +99,13 @@ def push(model_dir: str, package: str, version: str) -> None:
     "-d",
     "--dir",
     type=str,
-    default=imr_dir,
     help="directory to pull the model in.",
     show_default=True,
 )
 @click.option(
     "-v", "--version", type=str, default="latest", help="version of the model.", show_default=True
 )
-def pull(package: str, model_dir: str, version: str) -> None:
+@click.pass_obj
+def pull(obj: Context, package: str, model_dir: str, version: str) -> None:
     """Pull model from remote repository."""
-    imr_remote.pull(model_dir, package, version)
-
-
-if __name__ == "__main__":
-    cli()
+    obj.imr_remote.pull(model_dir, package, version)

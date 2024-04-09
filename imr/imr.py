@@ -1,5 +1,4 @@
-# Inteligent Model Registry (imr)
-import os
+"""Intelligent Model Registry (imr)"""
 import shutil
 from pathlib import Path
 
@@ -39,12 +38,12 @@ class IMRRemote:
             auth=(self.user, self.password),
             auth_type=HTTPBasicAuth,
         )
-        file_path = directory + "/" + package + "/" + version
+        file_path: Path = Path(directory) / package / version
         if not Path(file_path).exists():
             Path.mkdir(file_path, parents=True)
-        with path.open() as fd, Path.open(file_path + "/" + "model.zip", "wb") as out:
+        with path.open() as fd, Path.open(file_path / "model.zip", "wb") as out:
             out.write(fd.read())
-        shutil.unpack_archive(file_path + "/" + "model.zip", file_path + "/model")
+        shutil.unpack_archive(file_path / "model.zip", file_path / "model")
 
     def rm(self, package: str, version: str = "latest") -> None:
         """Remove a model from the remote repository."""
@@ -59,30 +58,37 @@ class IMRRemote:
 class IMRLocal:
     """Local repository class."""
 
+    repo: Path
+    home: Path
+
     def __init__(self, repo: str | None = None):
         self.home = Path.home()
         if repo is None:
-            self.repo = str(self.home) + "/.imr"
+            self.repo = self.home / ".imr"
         else:
-            self.repo = repo
+            self.repo = Path(repo)
         if not Path(self.repo).exists():
-            Path.mkdir(self.repo, parents=True)
+            Path(self.repo).mkdir(parents=True)
 
-    def list(self) -> list:
-        """List local models."""
-        return [
-            entry[0].replace(self.repo + "/", "")
-            for entry in os.walk(self.repo)
-            if len(entry[1]) == 0 and entry[0] not in self.repo
-        ]
+    def list(self) -> list[str]:
+        """List local models.
+
+        returns all the paths in the repository after main directory
+        BASE/modela/version1
+        BASE/modela/version2
+        BASE/modelb/version3
+
+        results in ["modela/version1", "modela/version2", "modelb/version3"]
+        """
+        return ["/".join(version.parts[-2:]) for version in self.repo.rglob("*/*/")]
 
     def push(self, directory: str, package: str, version: str = "latest") -> None:
         """Push a model in a directory to the local repository."""
-        shutil.copytree(directory, self.repo + "/" + package + "/" + version)
+        shutil.copytree(src=directory, dst=self.repo / package / version)
 
     def rm(self, package: str, version: str = "latest") -> None:
         """Remove a model from the local repository."""
         if version is None:
-            shutil.rmtree(self.repo + "/" + package)
+            shutil.rmtree(self.repo / package)
         else:
-            shutil.rmtree(self.repo + "/" + package + "/" + version)
+            shutil.rmtree(self.repo / package / version)
