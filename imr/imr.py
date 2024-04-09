@@ -8,6 +8,8 @@ from requests.auth import HTTPBasicAuth
 
 
 class IMRRemote:
+    """Remote repository class."""
+
     def __init__(self, repo: str, user: str, password: str):
         self.repo = repo
         self.user = user
@@ -15,13 +17,12 @@ class IMRRemote:
         self.home = str(Path.home())
 
     def list(self) -> list:
-        packages = []
+        """List models from the remote repository."""
         path = ArtifactoryPath(self.repo, auth=(self.user, self.password), auth_type=HTTPBasicAuth)
-        for package in path.glob("*/*"):
-            packages.append(str(package).replace(self.repo + "/", ""))
-        return packages
+        return [str(package).replace(self.repo + "/", "") for package in path.glob("*/*")]
 
-    def push(self, directory: str, package: str, version :str="latest") -> None:
+    def push(self, directory: str, package: str, version: str = "latest") -> None:
+        """Push a local model to the remote repository."""
         path = ArtifactoryPath(
             self.repo + "/" + package + "/" + version,
             auth=(self.user, self.password),
@@ -31,7 +32,8 @@ class IMRRemote:
         shutil.make_archive("model", "zip", directory)
         path.deploy_file("model.zip")
 
-    def pull(self, directory: str, package: str, version :str="latest") -> None:
+    def pull(self, directory: str, package: str, version: str = "latest") -> None:
+        """Pull a remote model to the local repository."""
         path = ArtifactoryPath(
             self.repo + "/" + package + "/" + version + "/model.zip",
             auth=(self.user, self.password),
@@ -44,7 +46,8 @@ class IMRRemote:
             out.write(fd.read())
         shutil.unpack_archive(file_path + "/" + "model.zip", file_path + "/model")
 
-    def rm(self, package: str, version :str="latest") -> None:
+    def rm(self, package: str, version: str = "latest") -> None:
+        """Remove a model from the remote repository."""
         artefact = self.repo + "/" + package
         if version is not None:
             artefact = self.repo + "/" + package + "/" + version
@@ -54,6 +57,8 @@ class IMRRemote:
 
 
 class IMRLocal:
+    """Local repository class."""
+
     def __init__(self, repo: str | None = None):
         self.home = Path.home()
         if repo is None:
@@ -64,16 +69,19 @@ class IMRLocal:
             Path.mkdir(self.repo, parents=True)
 
     def list(self) -> list:
-        list = []
-        for entry in os.walk(self.repo):
-            if len(entry[1]) == 0 and entry[0] not in self.repo:
-                list.append(entry[0].replace(self.repo + "/", ""))
-        return list
+        """List local models."""
+        return [
+            entry[0].replace(self.repo + "/", "")
+            for entry in os.walk(self.repo)
+            if len(entry[1]) == 0 and entry[0] not in self.repo
+        ]
 
-    def push(self, directory: str, package: str, version: str="latest") -> None:
+    def push(self, directory: str, package: str, version: str = "latest") -> None:
+        """Push a model in a directory to the local repository."""
         shutil.copytree(directory, self.repo + "/" + package + "/" + version)
 
-    def rm(self, package: str, version :str="latest") -> None:
+    def rm(self, package: str, version: str = "latest") -> None:
+        """Remove a model from the local repository."""
         if version is None:
             shutil.rmtree(self.repo + "/" + package)
         else:
