@@ -54,7 +54,7 @@ class IMRRemote:
         if path.exists():
             path.unlink()
 
-    def path(self, package: str, version: str = "latest") -> Path:
+    def path(self, package: str, version: str = "latest") -> ArtifactoryPath:
         """Return the path to the model."""
         artefact = self.repo + "/" + package
         if version is not None:
@@ -102,7 +102,7 @@ class IMRLocal:
 
     def path(self, package: str, version: str = "latest") -> Path:
         """Return the path to the model."""
-        path = self.repo / package
+        path :Path = self.repo / package
         if version is not None:
             path = self.repo / package / version
         return path
