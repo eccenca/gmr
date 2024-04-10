@@ -12,9 +12,9 @@
   - install
   - setup
   - repositories (local/remote)
-  - push
-  - remove
-  - path
+  - [push](#path)
+  - [remove](#remove)
+  - [path](#path)
 
 
 
