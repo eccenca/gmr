@@ -54,6 +54,13 @@ class IMRRemote:
         if path.exists():
             path.unlink()
 
+    def path(self, package: str, version: str = "latest") -> Path:
+        """Return the path to the model."""
+        artefact = self.repo + "/" + package
+        if version is not None:
+            artefact += "/" + version
+        return ArtifactoryPath(artefact, auth=(self.user, self.password), auth_type=HTTPBasicAuth)
+
 
 class IMRLocal:
     """Local repository class."""
@@ -92,3 +99,10 @@ class IMRLocal:
             shutil.rmtree(self.repo / package)
         else:
             shutil.rmtree(self.repo / package / version)
+
+    def path(self, package: str, version: str = "latest") -> Path:
+        """Return the path to the model."""
+        path = self.repo / package
+        if version is not None:
+            path = self.repo / package / version
+        return path
