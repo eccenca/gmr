@@ -7,7 +7,7 @@ from pathlib import Path
 
 import click
 
-from imr.imr import IMRLocal, IMRRemote
+from imr.imr import IMRLocal, IMRRemote, load_config
 
 
 class Context:
@@ -15,7 +15,7 @@ class Context:
 
     home = Path.home()
     imr_dir = home / ".imr"
-    imr_local: IMRLocal = IMRLocal(str(imr_dir))
+    imr_local: IMRLocal
     imr_remote: IMRRemote
 
 
@@ -24,12 +24,20 @@ class Context:
 def cli(ctx: click.Context) -> None:
     """Get the cli command options."""
     ctx.obj = Context()
-    #  add  loadParams() later
 
 
 @cli.group()
-def local() -> None:
+@click.option(
+    "-c", "--config", type=str, help="name of the configuration."
+)
+@click.pass_obj
+def local(obj: Context, config: str) -> None:
     """Get local command options."""
+    if config is not None:
+        config_params = load_config(config)
+        obj.imr_local = IMRLocal(config_params["path"])
+    else:
+        obj.imr_local = IMRLocal(str(obj.imr_dir))
 
 
 @local.command("list")
@@ -63,13 +71,27 @@ def path_local(obj: Context, package: str, version: str) -> None:
 
 
 @cli.group()
-@click.argument("host")
-@click.argument("user")
-@click.argument("password")
+@click.option(
+    "-h", "--host", type=str, help="Server host address ie. http://mymodelhost.me."
+)
+@click.option(
+    "-u", "--user", type=str, help="Server host user."
+)
+@click.option(
+    "-p", "--password", type=str, help="Server host password."
+)
+@click.option(
+    "-c", "--config", type=str, help="Remote configuration."
+)
 @click.pass_obj
-def remote(obj: Context, host: str, user: str, password: str) -> None:
+def remote(obj: Context, host: str, user: str, password: str, config: str) -> None:
     """Get remote command cli options."""
-    obj.imr_remote = IMRRemote(host, user, password)
+    if host is not None:
+        obj.imr_remote = IMRRemote(host, user, password)
+    else:
+        config_params = load_config(config)
+        obj.imr_remote = IMRRemote(config_params["host"], config_params["user"],
+                                   config_params["password"])
 
 
 @remote.command("list")

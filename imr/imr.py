@@ -1,9 +1,40 @@
 """Intelligent Model Registry (imr)"""
+import configparser
 import shutil
+from collections.abc import MutableMapping
 from pathlib import Path
 
 from artifactory import ArtifactoryPath
 from requests.auth import HTTPBasicAuth
+
+default_local_path = Path.home() / ".imr"
+default_file_name = "imr.conf"
+
+
+def load_config(config_name: str) -> MutableMapping:
+    """Load configuration"""
+    return load_config_from_file(default_local_path / default_file_name, config_name)
+
+
+def load_config_from_file(file_path: Path, config: str) -> MutableMapping:
+    """Load configuration from file."""
+    config_params = configparser.ConfigParser()
+    if file_path.exists():
+        config_params.read(file_path)
+    else:
+        raise FileProcessingError(str(file_path), "Configuration file does not exist.")
+    if config not in config_params:
+        raise FileProcessingError(str(file_path), "Configuration does not exist: " + config)
+    return config_params[config]
+
+
+class FileProcessingError(Exception):
+    """File does not exists Error."""
+
+    def __init__(self, filename: str, message: str):
+        self.filename = filename
+        self.message = message
+        super().__init__(f"Error processing file '{filename}': {message}")
 
 
 class IMRRemote:
@@ -73,7 +104,7 @@ class IMRLocal:
         if repo is None:
             self.repo = self.home / ".imr"
         else:
-            self.repo = Path(repo)
+            self.repo = Path.expanduser(Path(repo))
         if not Path(self.repo).exists():
             Path(self.repo).mkdir(parents=True)
 
@@ -106,3 +137,24 @@ class IMRLocal:
         if version is not None:
             path = self.repo / package / version
         return path
+
+
+def imr_from_config(config_name: str) -> IMRRemote | IMRLocal:
+    """Create a repository based on the given configuration name."""
+    return imr_from_file(default_local_path / default_file_name, config_name)
+
+
+def imr_from_file(file_path: Path, config_name: str) -> IMRRemote | IMRLocal:
+    """Create a repository based on the given configuration name."""
+    repo_config = load_config_from_file(file_path, config_name)
+    if "type" not in repo_config:
+        raise FileProcessingError("imr.conf", "Repository type not specified.")
+    if repo_config["type"] == "local":
+        repo_path = repo_config["path"]
+        return IMRLocal(repo_path)
+    if repo_config["type"] == "remote":
+        repo_path = repo_config["path"]
+        user = repo_config["user"]
+        password = repo_config["password"]
+        return IMRRemote(repo_path, user, password)
+    raise FileProcessingError("imr.conf", "Repository type not known: " + repo_config["type"])
