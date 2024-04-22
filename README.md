@@ -15,6 +15,7 @@
   - [push](#path)
   - [remove](#remove)
   - [path](#path)
+- [Using Config File](#using-config-file)
 
 
 
@@ -108,11 +109,11 @@ imr remote rm -h http://localhost:8081 -u user -p password org.company.departmen
 Create a config file in your home directory ```~/.imr/imr.conf``` with the following configuration:
 
 ```
-[local]
+[mylocalrepo]
 type=local
 path=~/.imr
 
-[remote]
+[myremoterepo]
 type=remote
 user=user
 password=password
@@ -124,7 +125,7 @@ host=http://localhost:8081
 Now, you can execute your client using the config name i.e ```remote```:
 
 ```
-imr remote -c remote list
+imr myremoterepo -c remote list
 ```
 
 ## Development
