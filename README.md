@@ -9,9 +9,8 @@
 - [Start Artifactory](#start-artifactory)
 - [Create a repository](#create-a-repository)
 - [Intelligent Model Registry (imr) Ops](#inteligent-model-registry-imr-ops)
-  - install
-  - setup
-  - repositories (local/remote)
+  - [install](#install)
+  - [list](#list)
   - [push](#path)
   - [remove](#remove)
   - [path](#path)
