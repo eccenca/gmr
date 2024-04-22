@@ -11,7 +11,8 @@
 - [Intelligent Model Registry (imr) Ops](#inteligent-model-registry-imr-ops)
   - [install](#install)
   - [list](#list)
-  - [push](#path)
+  - [push](#push)
+  - [pull](#pull)
   - [remove](#remove)
   - [path](#path)
 - [Using Config File](#using-config-file)
@@ -83,6 +84,19 @@ To publish the model in a remotely repository, execute the command ```imr remote
 imr remote push -h http://localhost:8081 -u user -p password DIRECTORY org.company.department.project.function.mymodel -v v0.0.1
 ```
 
+#### pull
+
+The command pull is reserved only for remote repositories.
+
+To pull the model from a remote repository, execute the command ```imr pull -h REPO -u USER -p PASSWORD PACKAGE -v VERSION```:
+ - ```REPO``` repository url i.e. ```http://localhost:8081```
+ - ```USER``` user
+ - ```PASSWORD``` password
+ - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
+ - ```VERSION``` optionally (default latest)
+```
+imr remote pull -h http://localhost:8081 -u user -p password org.company.department.project.function.mymodel -v v0.0.1
+```
 
 #### path
 
