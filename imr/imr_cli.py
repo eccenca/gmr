@@ -27,7 +27,9 @@ def cli(ctx: click.Context) -> None:
 
 
 @cli.group()
-@click.option("-c", "--config", type=str, help="name of the configuration.")
+@click.option(
+    "-c", "--config", type=str, help="name of the configuration."
+)
 @click.pass_obj
 def local(obj: Context, config: str) -> None:
     """Get local command options."""
@@ -69,10 +71,18 @@ def path_local(obj: Context, package: str, version: str) -> None:
 
 
 @cli.group()
-@click.option("-h", "--host", type=str, help="Server host address ie. http://mymodelhost.me.")
-@click.option("-u", "--user", type=str, help="Server host user.")
-@click.option("-p", "--password", type=str, help="Server host password.")
-@click.option("-c", "--config", type=str, help="Remote configuration.")
+@click.option(
+    "-h", "--host", type=str, help="Server host address ie. http://mymodelhost.me."
+)
+@click.option(
+    "-u", "--user", type=str, help="Server host user."
+)
+@click.option(
+    "-p", "--password", type=str, help="Server host password."
+)
+@click.option(
+    "-c", "--config", type=str, help="Remote configuration."
+)
 @click.pass_obj
 def remote(obj: Context, host: str, user: str, password: str, config: str) -> None:
     """Get remote command cli options."""
@@ -80,9 +90,8 @@ def remote(obj: Context, host: str, user: str, password: str, config: str) -> No
         obj.imr_remote = IMRRemote(host, user, password)
     else:
         config_params = load_config(config)
-        obj.imr_remote = IMRRemote(
-            config_params["host"], config_params["user"], config_params["password"]
-        )
+        obj.imr_remote = IMRRemote(config_params["host"], config_params["user"],
+                                   config_params["password"])
 
 
 @remote.command("list")
