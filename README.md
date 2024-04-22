@@ -46,10 +46,21 @@ Once Artifactory has started, navigate to the default URL ```http://localhost:80
 pip install imr
 ```
 
-#### setup
+#### list
 
-coming soon
 
+To list all models available in the local repository, execute the command ```imr local list```:
+```
+imr local list
+```
+
+To list all models available in the remote, execute the command ```imr remote list -h REPO -u USER -p PASSWORD```:
+ - ```REPO``` repository url i.e. ```http://localhost:8081```
+ - ```USER``` user
+ - ```PASSWORD``` password
+```
+imr remote list -h http://localhost:8081 -u user -p password
+```
 
 #### push
 
@@ -63,6 +74,8 @@ imr local push DIRECTORY org.company.department.project.function.mymodel -v v0.0
 
 To publish the model in a remotely repository, execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
+ - ```USER``` user
+ - ```PASSWORD``` password
  - ```DIRECTORY``` of the model
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
@@ -82,6 +95,8 @@ imr local path org.company.department.project.function.mymodel -v v0.0.1
 
 To publish the model in a remotely repository execute the command ```imr remote path -h REPO -u USER -p PASSWORD PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
+ - ```USER``` user
+ - ```PASSWORD``` password
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
@@ -100,6 +115,8 @@ imr local rm org.company.department.project.function.mymodel -v v0.0.1
 
 To publish the model in a remotely repository execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
+ - ```USER``` user
+ - ```PASSWORD``` password
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
