@@ -1,4 +1,4 @@
-# imr (Inteligent Model Registry)
+# imr (Intelligent Model Registry)
 
 This is a command-line interface and library for managing inteligent models.
 
