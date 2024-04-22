@@ -15,6 +15,7 @@
   - [push](#path)
   - [remove](#remove)
   - [path](#path)
+- [Using Config File](#using-config-file)
 
 
 
@@ -59,13 +60,13 @@ To publish model in a local repository execute the command ```imr local push DIR
 imr local push DIRECTORY org.company.department.project.function.mymodel -v v0.0.1
 ```
 
-To publish model in a remotly repository execute the command ```imr remote push REPO USER PASSWORD DIRECTORY PACKAGE -v VERSION```:
+To publish model in a remotly repository execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
  - ```DIRECTORY``` of the model
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
-imr remote push http://localhost:8081 user password DIRECTORY org.company.department.project.function.mymodel -v v0.0.1
+imr remote push -h http://localhost:8081 -u user -p password DIRECTORY org.company.department.project.function.mymodel -v v0.0.1
 ```
 
 
@@ -78,12 +79,12 @@ To publish model in a local repository execute the command ```imr local path PAC
 imr local path org.company.department.project.function.mymodel -v v0.0.1
 ```
 
-To publish model in a remotly repository execute the command ```imr remote path REPO USER PASSWORD PACKAGE -v VERSION```:
+To publish model in a remotly repository execute the command ```imr remote path -h REPO -u USER -p PASSWORD PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
-imr remote path http://localhost:8081 user password org.company.department.project.function.mymodel -v v0.0.1
+imr remote path -h http://localhost:8081 -u user -p password org.company.department.project.function.mymodel -v v0.0.1
 ```
 
 
@@ -96,15 +97,36 @@ To publish model in a local repository execute the command ```imr local rm PACKA
 imr local rm org.company.department.project.function.mymodel -v v0.0.1
 ```
 
-To publish model in a remotly repository execute the command ```imr remote push REPO USER PASSWORD DIRECTORY PACKAGE -v VERSION```:
+To publish model in a remotly repository execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
-imr remote rm http://localhost:8081 user password org.company.department.project.function.mymodel -v v0.0.1
+imr remote rm -h http://localhost:8081 -u user -p password org.company.department.project.function.mymodel -v v0.0.1
 ```
 
+### Using config file
+Create a config file in your home directory ```~/.imr/imr.conf``` with the following configuration:
 
+```
+[mylocalrepo]
+type=local
+path=~/.imr
+
+[myremoterepo]
+type=remote
+user=user
+password=password
+host=http://localhost:8081
+```
+
+* Notice that you can have as many repositories as you want.
+
+Now, you can execute your client using the config name i.e ```remote```:
+
+```
+imr myremoterepo -c remote list
+```
 
 ## Development
 
