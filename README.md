@@ -125,7 +125,7 @@ Now, you can execute your client using the config name i.e ```remote```:
 
 ```
 imr remote -c remote list
-´´´
+```
 
 ## Development
 
