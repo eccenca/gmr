@@ -104,7 +104,22 @@ To publish model in a remotly repository execute the command ```imr remote push 
 imr remote rm -h http://localhost:8081 -u user -p password org.company.department.project.function.mymodel -v v0.0.1
 ```
 
+### config
+Create a config file in your home directory ```~/.imr/imr.conf``` with the following configuration:
 
+```
+[local]
+type=local
+path=~/.imr
+
+[remote]
+type=remote
+user=user
+password=password
+host=http://localhost:8081
+```
+
+* Notice that you can have as many repositories as you want.
 
 ## Development
 
