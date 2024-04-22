@@ -43,7 +43,9 @@ Once Artifactory has started, navigate to the default URL ```http://localhost:80
 
 #### install
 
-coming soon
+```
+pip install imr
+```
 
 #### setup
 
@@ -52,15 +54,15 @@ coming soon
 
 #### push
 
-To publish model in a local repository execute the command ```imr local push DIRECTORY PACKAGE -v VERSION``` given the arguments:
+To publish the model in a local repository, execute the command ```imr local push DIRECTORY PACKAGE -v VERSION``` given the arguments:
  - ```DIRECTORY``` of the model
- - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
+ - ```PACKAGE``` used to identify the model, i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
 imr local push DIRECTORY org.company.department.project.function.mymodel -v v0.0.1
 ```
 
-To publish model in a remotly repository execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
+To publish the model in a remotely repository, execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
  - ```DIRECTORY``` of the model
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
@@ -72,14 +74,14 @@ imr remote push -h http://localhost:8081 -u user -p password DIRECTORY org.compa
 
 #### path
 
-To publish model in a local repository execute the command ```imr local path PACKAGE -v VERSION``` given the arguments:
- - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
+To publish the model in a local repository, execute the command ```imr local path PACKAGE -v VERSION``` given the arguments:
+ - ```PACKAGE``` used to identify the model, i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
 imr local path org.company.department.project.function.mymodel -v v0.0.1
 ```
 
-To publish model in a remotly repository execute the command ```imr remote path -h REPO -u USER -p PASSWORD PACKAGE -v VERSION```:
+To publish the model in a remotely repository execute the command ```imr remote path -h REPO -u USER -p PASSWORD PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
@@ -90,14 +92,14 @@ imr remote path -h http://localhost:8081 -u user -p password org.company.departm
 
 #### remove
 
-To publish model in a local repository execute the command ```imr local rm PACKAGE -v VERSION``` given the arguments:
+To publish the model in a local repository, execute the command ```imr local rm PACKAGE -v VERSION``` given the arguments:
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
 ```
 imr local rm org.company.department.project.function.mymodel -v v0.0.1
 ```
 
-To publish model in a remotly repository execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
+To publish the model in a remotely repository execute the command ```imr remote push -h REPO -u USER -p PASSWORD DIRECTORY PACKAGE -v VERSION```:
  - ```REPO``` repository url i.e. ```http://localhost:8081```
  - ```PACKAGE``` used to identify the model i.e ```org.company.department.project.function.mymodel``` 
  - ```VERSION``` optionally (default latest)
@@ -125,7 +127,7 @@ host=http://localhost:8081
 Now, you can execute your client using the config name i.e ```remote```:
 
 ```
-imr myremoterepo -c remote list
+imr remote -c myremoterepo list
 ```
 
 ## Development
