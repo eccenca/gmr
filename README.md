@@ -154,7 +154,7 @@ host=http://localhost:8081
 
 * Notice that you can have as many repositories as you want.
 
-Now, you can execute your client using the config name i.e ```remote```:
+Now, you can execute your client using the config name i.e ```myremoterepo``` as following:
 
 ```
 imr remote -c myremoterepo list
