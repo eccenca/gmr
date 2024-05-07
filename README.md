@@ -28,7 +28,6 @@ Running from a docker image. Just run:
 
 ```
 $ docker run --name artifactory -d -p 8081:8081 -p 8082:8082 docker.bintray.io/jfrog/artifactory-cpp-ce:latest
-
 ```
 
 Download and run from zip file. The Download Page has a link for you to follow. When the file is unzipped, launch Artifactory by double clicking the artifactory.bat(Windows) or artifactory.sh script in the app/bin subfolder, depending on the OS. Artifactory comes with JDK bundled, please read Artifactory requirements.
