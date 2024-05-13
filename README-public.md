@@ -8,4 +8,3 @@ with pip as following:
 ```
 pip install imr
 ```
-
