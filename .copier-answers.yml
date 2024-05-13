@@ -1,10 +1,10 @@
 # Changes here will be overwritten by Copier
-_commit: v6.1.0
+_commit: v6.2.0
 _src_path: gh:eccenca/cmem-plugin-template
 author_mail: edgard.marx@eccenca.com
 author_name: eccenca GmbH
 github_page: https://github.com/eccenca/imr
 project_description: Inteligent Model Registry
 project_slug: imr
-pypi: false
+pypi: true
 
