@@ -18,7 +18,6 @@ imr = 'imr.imr_cli:cli'
 # if you need to change python version here, change it also in .python-version
 python = "^3.11"
 idna = "3.7"
-langchain = "0.1.20"
 
 [tool.poetry.group.dev.dependencies]
 genbadge = {extras = ["coverage"], version = "^1.1.1"}
